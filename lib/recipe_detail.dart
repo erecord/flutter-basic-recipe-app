@@ -12,6 +12,8 @@ class RecipeDetail extends StatefulWidget {
 }
 
 class _RecipeDetailState extends State<RecipeDetail> {
+  int _sliderVal = 1;
+
   Widget buildScaffold(Widget body) => Scaffold(
         appBar: AppBar(
           title: Text(widget.recipe.label),
@@ -30,25 +32,46 @@ class _RecipeDetailState extends State<RecipeDetail> {
       );
   Widget buildIngredientsList(BuildContext context, int index) {
     final ingredient = widget.recipe.ingredients[index];
+    var calculatedIngredientQuantity = ingredient.quantity * _sliderVal;
     return Text(
-        '${ingredient.quantity} ${ingredient.measure} ${ingredient.name}');
+        '$calculatedIngredientQuantity ${ingredient.measure} ${ingredient.name}');
   }
 
+  Widget buildSlider(String calculatedServingsCountText) => Slider(
+        min: 1,
+        max: 10,
+        label: calculatedServingsCountText,
+        value: _sliderVal.toDouble(),
+        onChanged: (newValue) {
+          setState(() {
+            _sliderVal = newValue.round();
+          });
+        },
+        activeColor: Colors.green,
+        inactiveColor: Colors.black,
+      );
+
   @override
-  Widget build(BuildContext context) => buildScaffold(buildColumn([
-        SizedBox(
-            height: 300,
-            width: double.infinity,
-            child: buildRecipeImage(widget.recipe)),
-        const SizedBox(
-          height: 4,
-        ),
-        buildRecipeLabel(widget.recipe),
-        Expanded(
-            child: ListView.builder(
-          padding: const EdgeInsets.all(7),
-          itemCount: widget.recipe.ingredients.length,
-          itemBuilder: buildIngredientsList,
-        ))
-      ]));
+  Widget build(BuildContext context) {
+    var calculatedServingsCountText =
+        '${_sliderVal * widget.recipe.servings} servings';
+    return buildScaffold(buildColumn([
+      SizedBox(
+          height: 300,
+          width: double.infinity,
+          child: buildRecipeImage(widget.recipe)),
+      const SizedBox(
+        height: 4,
+      ),
+      buildRecipeLabel(widget.recipe),
+      Expanded(
+          child: ListView.builder(
+        padding: const EdgeInsets.all(7),
+        itemCount: widget.recipe.ingredients.length,
+        itemBuilder: buildIngredientsList,
+      )),
+      Text(calculatedServingsCountText),
+      buildSlider(calculatedServingsCountText)
+    ]));
+  }
 }
