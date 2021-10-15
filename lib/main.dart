@@ -39,6 +39,51 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+Padding buildPadding(Widget child) =>
+    Padding(key: UniqueKey(), child: child, padding: const EdgeInsets.all(16));
+
+Column buildColumn(Recipe recipe) {
+  var children = [
+    Image(image: AssetImage(recipe.imageUrl)),
+    const SizedBox(
+      height: 13,
+    ),
+    Text(
+      recipe.label,
+      style: const TextStyle(
+          fontSize: 19, fontWeight: FontWeight.w700, fontFamily: 'Palatino'),
+    )
+  ];
+  return Column(
+    children: children,
+  );
+}
+
+Card buildCard(Padding padding) => Card(
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: padding,
+    );
+
+Widget buildRecipeCard(Recipe recipe) =>
+    buildCard(buildPadding(buildColumn(recipe)));
+
+GestureDetector buildGestureDetector(
+        BuildContext context, Widget child, Widget onTapContent) =>
+    GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => onTapContent));
+      },
+      child: child,
+    );
+
+Widget buildRecipeCards(BuildContext context, int index) =>
+    buildGestureDetector(
+        context, buildRecipeCard(Recipe.samples[index]), buildOnTapContent());
+
+Widget buildOnTapContent() => const Text('Details Page');
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
@@ -47,40 +92,9 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: SafeArea(
-          child: ListView.builder(
-              itemCount: Recipe.samples.length,
-              itemBuilder: (BuildContext context, int index) {
-                return buildRecipeCard(Recipe.samples[index]);
-              }),
-        ));
+            child: ListView.builder(
+          itemCount: Recipe.samples.length,
+          itemBuilder: buildRecipeCards,
+        )));
   }
-
-  Padding buildPadding(Widget child) => Padding(
-      key: UniqueKey(), child: child, padding: const EdgeInsets.all(16));
-
-  Column buildColumn(Recipe recipe) {
-    var children = [
-      Image(image: AssetImage(recipe.imageUrl)),
-      const SizedBox(
-        height: 14,
-      ),
-      Text(
-        recipe.label,
-        style: const TextStyle(
-            fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'Palatino'),
-      )
-    ];
-    return Column(
-      children: children,
-    );
-  }
-
-  Card buildCard(Padding padding) => Card(
-        elevation: 2.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: padding,
-      );
-
-  Widget buildRecipeCard(Recipe recipe) =>
-      buildCard(buildPadding(buildColumn(recipe)));
 }
