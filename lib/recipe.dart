@@ -6,7 +6,7 @@ class Recipe {
   // TODO: Add servings and ingredients
 
   Recipe(this.label, this.imageUrl);
-  List<Recipe> samples = RecipeService.findAll();
+  static List<Recipe> samples = RecipeService.findAll();
 }
 
 // TODO: Add Ingredient here
