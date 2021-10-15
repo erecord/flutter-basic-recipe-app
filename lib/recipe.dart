@@ -3,10 +3,17 @@ import 'package:recipes/recipie_service.dart';
 class Recipe {
   String label;
   String imageUrl;
-  // TODO: Add servings and ingredients
+  int servings;
+  List<Ingredient> ingredients;
 
-  Recipe(this.label, this.imageUrl);
+  Recipe(this.label, this.imageUrl, this.servings, this.ingredients);
   static List<Recipe> samples = RecipeService.findAll();
 }
 
-// TODO: Add Ingredient here
+class Ingredient {
+  double quantity;
+  String measure;
+  String name;
+
+  Ingredient(this.quantity, this.measure, this.name);
+}

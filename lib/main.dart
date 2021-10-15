@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipes/recipe_detail.dart';
 import 'recipe.dart';
 
 void main() {
@@ -78,11 +79,13 @@ GestureDetector buildGestureDetector(
       child: child,
     );
 
-Widget buildRecipeCards(BuildContext context, int index) =>
-    buildGestureDetector(
-        context, buildRecipeCard(Recipe.samples[index]), buildOnTapContent());
+Widget buildRecipeCards(BuildContext context, int index) {
+  var recipe = Recipe.samples[index];
+  return buildGestureDetector(
+      context, buildRecipeCard(recipe), buildOnTapContent(recipe));
+}
 
-Widget buildOnTapContent() => const Text('Details Page');
+Widget buildOnTapContent(Recipe recipe) => RecipeDetail(recipe: recipe);
 
 class _MyHomePageState extends State<MyHomePage> {
   @override

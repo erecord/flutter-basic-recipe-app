@@ -28,6 +28,12 @@ class _RecipeDetailState extends State<RecipeDetail> {
   Widget buildColumn(List<Widget> children) => Column(
         children: children,
       );
+  Widget buildIngredientsList(BuildContext context, int index) {
+    final ingredient = widget.recipe.ingredients[index];
+    return Text(
+        '${ingredient.quantity} ${ingredient.measure} ${ingredient.name}');
+  }
+
   @override
   Widget build(BuildContext context) => buildScaffold(buildColumn([
         SizedBox(
@@ -37,6 +43,12 @@ class _RecipeDetailState extends State<RecipeDetail> {
         const SizedBox(
           height: 4,
         ),
-        buildRecipeLabel(widget.recipe)
+        buildRecipeLabel(widget.recipe),
+        Expanded(
+            child: ListView.builder(
+          padding: const EdgeInsets.all(7),
+          itemCount: widget.recipe.ingredients.length,
+          itemBuilder: buildIngredientsList,
+        ))
       ]));
 }
