@@ -30,7 +30,7 @@ class _RecipeDetailState extends State<RecipeDetail> {
   Widget buildColumn(List<Widget> children) => Column(
         children: children,
       );
-  Widget buildIngredientsList(BuildContext context, int index) {
+  Widget buildIngredientTextItem(BuildContext context, int index) {
     final ingredient = widget.recipe.ingredients[index];
     var calculatedIngredientQuantity = ingredient.quantity * _sliderVal;
     return Text(
@@ -68,7 +68,7 @@ class _RecipeDetailState extends State<RecipeDetail> {
           child: ListView.builder(
         padding: const EdgeInsets.all(7),
         itemCount: widget.recipe.ingredients.length,
-        itemBuilder: buildIngredientsList,
+        itemBuilder: buildIngredientTextItem,
       )),
       Text(calculatedServingsCountText),
       buildSlider(calculatedServingsCountText)
