@@ -55,14 +55,32 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  Widget buildRecipeCard(Recipe recipe) {
-    return Card(
-      child: Column(
-        children: [
-          Image(image: AssetImage(recipe.imageUrl)),
-          Text(recipe.label)
-        ],
+  Padding buildPadding(Widget child) => Padding(
+      key: UniqueKey(), child: child, padding: const EdgeInsets.all(16));
+
+  Column buildColumn(Recipe recipe) {
+    var children = [
+      Image(image: AssetImage(recipe.imageUrl)),
+      const SizedBox(
+        height: 14,
       ),
+      Text(
+        recipe.label,
+        style: const TextStyle(
+            fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'Palatino'),
+      )
+    ];
+    return Column(
+      children: children,
     );
   }
+
+  Card buildCard(Padding padding) => Card(
+        elevation: 2.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: padding,
+      );
+
+  Widget buildRecipeCard(Recipe recipe) =>
+      buildCard(buildPadding(buildColumn(recipe)));
 }
